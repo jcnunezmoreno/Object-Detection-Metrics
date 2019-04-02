@@ -16,6 +16,7 @@ import os
 import shutil
 # from argparse import RawTextHelpFormatter
 import sys
+import json
 
 import _init_paths
 from BoundingBox import BoundingBox
@@ -359,6 +360,14 @@ for metricsPerClass in detections:
         f.write('\nAP: %s' % ap_str)
         f.write('\nPrecision: %s' % prec)
         f.write('\nRecall: %s' % rec)
+
+        output_dict = dict()
+        output_dict["precision"] = precision.tolist()
+        output_dict["recall"] = recall.tolist()
+        output_dict["mAP"] = ap
+
+        with open(os.path.join(savePath, cl +'_results.json'), 'w') as outfile:
+            json.dump(output_dict, outfile)
 
 mAP = acc_AP / validClasses
 mAP_str = "{0:.2f}%".format(mAP * 100)
